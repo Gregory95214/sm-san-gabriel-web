@@ -227,6 +227,54 @@
     textarea.field { min-height:120px; resize:vertical; }
     .contact-disclaimer { font-size:.72rem; color:#71858e; margin:5px 0 0; }
 
+    .form-confirmation {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(3,13,18,.78);
+      backdrop-filter: blur(8px);
+    }
+    .form-confirmation.show { display: flex; }
+    .form-confirmation-card {
+      width: min(560px, 100%);
+      border: 1px solid rgba(173,212,159,.28);
+      border-radius: 26px;
+      background: linear-gradient(145deg, #102a25, #0a1b25);
+      box-shadow: 0 30px 90px rgba(0,0,0,.5);
+      padding: 38px;
+      text-align: center;
+    }
+    .form-confirmation-icon {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(117,169,135,.16);
+      border: 1px solid rgba(173,212,159,.28);
+      color: #c7e7c8;
+      font-size: 2rem;
+      font-weight: 900;
+    }
+    .form-confirmation-card h3 {
+      font-size: clamp(1.7rem, 4vw, 2.5rem);
+      margin-bottom: 14px;
+      letter-spacing: -.035em;
+    }
+    .form-confirmation-card p {
+      margin: 0 auto 24px;
+      max-width: 460px;
+      color: #b9cbc4;
+      font-size: 1rem;
+    }
+    .form-confirmation-card .btn { min-width: 150px; }
+    body.modal-open { overflow: hidden; }
+
     footer { padding:30px 0 50px; color:#6f838c; font-size:.78rem; }
     .footer-inner { display:flex; justify-content:space-between; gap:24px; padding-top:26px; border-top:1px solid var(--line); }
 
@@ -644,6 +692,15 @@
     </div>
   </footer>
 
+  <div class="form-confirmation" id="formConfirmation" role="dialog" aria-modal="true" aria-labelledby="confirmationTitle">
+    <div class="form-confirmation-card">
+      <div class="form-confirmation-icon" aria-hidden="true">✓</div>
+      <h3 id="confirmationTitle">¡Información enviada correctamente!</h3>
+      <p>Recibimos los datos de tu proyecto. En breve un ingeniero de SM San Gabriel se pondrá en contacto contigo.</p>
+      <button class="btn btn-primary" type="button" id="confirmationClose">Entendido</button>
+    </div>
+  </div>
+
   <a class="whatsapp-float" href="https://wa.me/523334987632?text=Hola%2C%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20un%20proyecto%20industrial." target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
     <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M19.11 17.21c-.29-.15-1.71-.84-1.98-.94-.27-.1-.47-.15-.67.15-.2.29-.76.94-.93 1.13-.17.2-.34.22-.64.07-.29-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.74-1.63-2.03-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.2-.29.29-.49.1-.2.05-.37-.02-.51-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.51.07-.79.37-.27.29-1.03 1.01-1.03 2.47s1.06 2.87 1.21 3.07c.15.2 2.09 3.19 5.06 4.47.71.3 1.26.49 1.69.63.71.23 1.35.2 1.86.12.57-.08 1.71-.7 1.95-1.37.24-.67.24-1.25.17-1.37-.07-.12-.27-.2-.56-.34zM16.02 3.2A12.62 12.62 0 0 0 5.16 22.24L3.2 28.8l6.72-1.92a12.67 12.67 0 1 0 6.1-23.68zm0 22.98a10.3 10.3 0 0 1-5.25-1.44l-.38-.23-3.99 1.14 1.16-3.89-.25-.4a10.34 10.34 0 1 1 8.71 4.82z"/></svg>
   </a>
@@ -697,13 +754,38 @@
 
         if (!response.ok) throw new Error('No se pudo enviar');
 
-        status.textContent = 'Solicitud enviada correctamente. Gracias por contactarnos.';
+        status.textContent = '';
+        status.className = 'contact-disclaimer';
         form.reset();
+
+        const confirmation = document.getElementById('formConfirmation');
+        confirmation.classList.add('show');
+        document.body.classList.add('modal-open');
+        document.getElementById('confirmationClose').focus();
       } catch (error) {
         status.textContent = 'No pudimos enviar la solicitud en este momento. Intente nuevamente o contáctenos por WhatsApp.';
+        status.style.color = '#ffb4ab';
       } finally {
         button.disabled = false;
         button.textContent = 'Enviar solicitud →';
+      }
+    });
+
+    const confirmation = document.getElementById('formConfirmation');
+    const confirmationClose = document.getElementById('confirmationClose');
+
+    function closeConfirmation() {
+      confirmation.classList.remove('show');
+      document.body.classList.remove('modal-open');
+    }
+
+    confirmationClose.addEventListener('click', closeConfirmation);
+    confirmation.addEventListener('click', (event) => {
+      if (event.target === confirmation) closeConfirmation();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && confirmation.classList.contains('show')) {
+        closeConfirmation();
       }
     });
   </script>
