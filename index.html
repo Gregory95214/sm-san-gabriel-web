@@ -423,6 +423,48 @@
       .whatsapp-float { width:56px; height:56px; right:14px; bottom:14px; }
       .whatsapp-float::after { display:none; }
     }
+  
+    /* Language selector */
+    .lang-switcher { position:relative; margin-left:10px; flex:0 0 auto; }
+    .lang-toggle {
+      height:42px; min-width:64px; padding:0 13px;
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      border:1px solid rgba(242,189,112,.28); border-radius:999px;
+      background:rgba(255,255,255,.035); color:#e7eef0;
+      font:inherit; font-size:.78rem; font-weight:800; letter-spacing:.08em;
+      cursor:pointer; transition:.2s ease;
+    }
+    .lang-toggle:hover, .lang-toggle[aria-expanded="true"] {
+      border-color:rgba(242,189,112,.65);
+      background:rgba(242,189,112,.08);
+      color:#f2bd70;
+    }
+    .lang-chevron { font-size:.8rem; opacity:.72; transform:translateY(-1px); }
+    .lang-menu {
+      position:absolute; top:calc(100% + 10px); right:0; z-index:1200;
+      min-width:176px; padding:7px;
+      border:1px solid rgba(255,255,255,.12); border-radius:16px;
+      background:rgba(8,24,31,.98); box-shadow:0 20px 60px rgba(0,0,0,.42);
+      backdrop-filter:blur(12px);
+      opacity:0; visibility:hidden; transform:translateY(-6px);
+      transition:.18s ease;
+    }
+    .lang-menu.open { opacity:1; visibility:visible; transform:none; }
+    .lang-option {
+      width:100%; padding:10px 11px; display:flex; align-items:center;
+      justify-content:space-between; gap:16px;
+      border:0; border-radius:10px; background:transparent; color:#c7d4d8;
+      font:inherit; font-size:.8rem; text-align:left; cursor:pointer;
+    }
+    .lang-option:hover { background:rgba(255,255,255,.055); color:#fff; }
+    .lang-option.active { background:rgba(242,189,112,.1); color:#f2bd70; }
+    .lang-code { font-size:.7rem; font-weight:900; letter-spacing:.1em; opacity:.78; }
+    @media (max-width: 900px) {
+      .lang-switcher { margin-left:4px; }
+      .lang-toggle { height:38px; min-width:58px; padding:0 10px; }
+      .lang-menu { right:0; }
+    }
+
   </style>
 </head>
 <body>
@@ -443,6 +485,16 @@
         <a href="#direccion">Dirección técnica</a>
       </div>
       <a class="nav-cta" href="https://wa.me/523334987632?text=Hola%2C%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20un%20proyecto%20industrial." target="_blank" rel="noopener">WhatsApp · 33 3498 7632</a>
+      <div class="lang-switcher" id="langSwitcher">
+        <button class="lang-toggle" id="langToggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Cambiar idioma">
+          <span id="langCurrent">ES</span><span class="lang-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="lang-menu" id="langMenu" role="menu" aria-label="Seleccionar idioma">
+          <button class="lang-option active" type="button" data-lang="es" role="menuitem"><span>Español</span><span class="lang-code">ES</span></button>
+          <button class="lang-option" type="button" data-lang="en" role="menuitem"><span>English</span><span class="lang-code">EN</span></button>
+          <button class="lang-option" type="button" data-lang="pt" role="menuitem"><span>Português</span><span class="lang-code">PT</span></button>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -723,6 +775,424 @@
   </a>
 
   <script>
+    const translations = {
+      en: {
+        "Ingeniería industrial · México":"Industrial engineering · Mexico",
+        "Empresa":"Company",
+        "Capacidades":"Capabilities",
+        "Sectores":"Industries",
+        "Agave & energía":"Agave & energy",
+        "Dirección técnica":"Technical leadership",
+        "Más de 50 años resolviendo retos industriales":"More than 50 years solving industrial challenges",
+        "Ingeniería, diseño, fabricación, montaje, mantenimiento y puesta en marcha de plantas industriales. Una trayectoria técnica construida desde Jalisco para proyectos donde la experiencia de campo, la seguridad y la confiabilidad operativa son esenciales.":"Engineering, design, fabrication, installation, maintenance and commissioning of industrial plants. A technical track record built in Jalisco for projects where field experience, safety and operational reliability are essential.",
+        "Solicitar proyecto por WhatsApp":"Request a project via WhatsApp",
+        "Conocer la dirección técnica":"Meet the technical leadership",
+        "Dirección técnica:":"Technical leadership:",
+        "Ing. José Fidencio Rodríguez Gómez · Ingeniero Químico UdeG":"Eng. José Fidencio Rodríguez Gómez · Chemical Engineer, UdeG",
+        "Especialización destacada:":"Featured specialization:",
+        "energía del agave · tratamiento de vinazas · generación de electricidad":"agave energy · vinasse treatment · electricity generation",
+        "Experiencia de campo":"Field experience",
+        "Ingeniería industrial construida desde la operación real.":"Industrial engineering built from real operating experience.",
+        "Ing. José Fidencio Rodríguez Gómez · Dirección técnica de San Gabriel":"Eng. José Fidencio Rodríguez Gómez · Technical leadership, San Gabriel",
+        "Años de experiencia industrial":"Years of industrial experience",
+        "Sectores industriales señalados en el CV":"Industrial sectors listed in the résumé",
+        "Etapas: diseño, fabricación, montaje, mantenimiento y arranque":"Stages: design, fabrication, installation, maintenance and start-up",
+        "Formación profesional y posgrado tecnológico":"Professional education and technology postgraduate studies",
+        "Ingeniería que se convierte en planta.":"Engineering that becomes a working plant.",
+        "La fortaleza de San Gabriel está en integrar conocimiento de proceso con capacidad práctica de ejecución: entender el problema, definir la solución, fabricar, montar, poner en marcha y acompañar la operación industrial.":"San Gabriel's strength lies in combining process knowledge with practical execution: understanding the problem, defining the solution, fabricating, installing, commissioning and supporting industrial operations.",
+        "Experiencia técnica al frente":"Technical experience at the helm",
+        "La dirección técnica se apoya en la trayectoria del Ing. José Fidencio Rodríguez Gómez, Ingeniero Químico por la Universidad de Guadalajara y profesional con 50 años de experiencia reportada en diseño, fabricación, montaje, mantenimiento y puesta en marcha de plantas industriales.":"Technical leadership is backed by the career of Eng. José Fidencio Rodríguez Gómez, a Chemical Engineer from the University of Guadalajara with 50 years of reported experience in the design, fabrication, installation, maintenance and commissioning of industrial plants.",
+        "Profesión":"Profession",
+        "Ingeniero Químico · Universidad de Guadalajara":"Chemical Engineer · University of Guadalajara",
+        "Tesis":"Thesis",
+        "Anteproyecto para la instalación de un Horno de Cal en Apulco, Jalisco":"Preliminary project for the installation of a Lime Kiln in Apulco, Jalisco",
+        "Posgrado":"Postgraduate studies",
+        "Maestría en Proyectos Tecnológicos · UdeG":"Master's in Technology Projects · UdeG",
+        "Ubicación":"Location",
+        "San Gabriel, Jalisco, México":"San Gabriel, Jalisco, Mexico",
+        "Contacto":"Contact",
+        "Cincuenta años de experiencia permiten diseñar pensando no sólo en el plano, sino en cómo se fabrica, se monta, se opera y se mantiene cada solución.":"Fifty years of experience make it possible to design not only for the drawing board, but also for how each solution is fabricated, installed, operated and maintained.",
+        "Enfoque de SM San Gabriel.":"SM San Gabriel approach.",
+        "Del diseño a la puesta en marcha.":"From design to commissioning.",
+        "San Gabriel concentra su propuesta en resolver proyectos industriales de forma integral, reduciendo la distancia entre ingeniería, fabricación, montaje y operación real.":"San Gabriel focuses on solving industrial projects end to end, reducing the gap between engineering, fabrication, installation and real-world operation.",
+        "01 · INGENIERÍA":"01 · ENGINEERING",
+        "Diseño de plantas y procesos":"Plant and process design",
+        "Definición técnica de soluciones industriales, criterios de proceso, equipos, líneas y modificaciones para instalaciones nuevas o existentes.":"Technical definition of industrial solutions, process criteria, equipment, lines and modifications for new or existing facilities.",
+        "02 · FABRICACIÓN":"02 · FABRICATION",
+        "Fabricación industrial":"Industrial fabrication",
+        "Conversión de ingeniería y especificaciones en equipos y componentes fabricables, con enfoque en operación y mantenibilidad.":"Conversion of engineering and specifications into manufacturable equipment and components, with a focus on operation and maintainability.",
+        "03 · MONTAJE":"03 · INSTALLATION",
+        "Construcción y montaje":"Construction and installation",
+        "Integración en campo de equipos, sistemas y modificaciones industriales con coordinación técnica orientada a ejecución.":"Field integration of equipment, systems and industrial modifications with execution-focused technical coordination.",
+        "04 · MANTENIMIENTO":"04 · MAINTENANCE",
+        "Mantenimiento y rehabilitación":"Maintenance and rehabilitation",
+        "Intervenciones para conservar, recuperar o mejorar el desempeño de equipos e instalaciones industriales en servicio.":"Interventions to preserve, restore or improve the performance of operating industrial equipment and facilities.",
+        "05 · ARRANQUE":"05 · START-UP",
+        "Puesta en marcha":"Commissioning",
+        "Acompañamiento en el arranque y estabilización operativa de plantas, equipos y modificaciones de proceso.":"Support during start-up and operational stabilization of plants, equipment and process modifications.",
+        "06 · ENERGÍA":"06 · ENERGY",
+        "Energía del agave y vinazas":"Agave energy and vinasse",
+        "Especialización en proyectos para el uso total de la energía del agave, tratamiento de vinazas y generación de electricidad.":"Specialization in projects for the full use of agave energy, vinasse treatment and electricity generation.",
+        "07 · SEGURIDAD":"07 · SAFETY",
+        "Protección y alivio":"Protection and relief",
+        "Experiencia en proyectos de protección contra incendio, válvulas de seguridad y dispositivos de relevo.":"Experience in fire protection, safety valve and pressure-relief device projects.",
+        "Experiencia multisectorial · Especial énfasis azucarero":"Multi-industry experience · Special emphasis on sugar",
+        "Ingeniería aplicada a industrias de proceso.":"Engineering applied to process industries.",
+        "La trayectoria profesional registrada comprende plantas para las industrias azucarera, papelera, petrolera, farmacéutica, cementera, petroquímica y alimenticia.":"The documented professional track record includes plants for the sugar, paper, oil, pharmaceutical, cement, petrochemical and food industries.",
+        "Dentro de esta experiencia, la industria azucarera ocupa un lugar especialmente relevante por la participación técnica desarrollada en ingenios y sistemas de proceso a lo largo de décadas de actividad profesional.":"Within this experience, the sugar industry holds particular relevance because of decades of technical participation in sugar mills and process systems.",
+        "Azucarera":"Sugar",
+        "Papelera":"Paper",
+        "Petrolera":"Oil",
+        "Farmacéutica":"Pharmaceutical",
+        "Cementera":"Cement",
+        "Petroquímica":"Petrochemical",
+        "Alimenticia":"Food",
+        "La referencia de participación en todos los ingenios azucareros de México puede incorporarse de forma explícita cuando se integre un archivo de proyectos, ingenios, planos o referencias que permita documentarla públicamente.":"The reference to participation in all sugar mills in Mexico can be stated explicitly once a project, mill, drawing or reference archive is integrated to support it publicly.",
+        "Diagnóstico":"Assessment",
+        "Lectura de condiciones reales de planta, capacidades, restricciones, seguridad y objetivos de producción.":"Review of actual plant conditions, capacities, constraints, safety and production goals.",
+        "Ingeniería":"Engineering",
+        "Definición de criterios, equipos, materiales, arreglos y solución técnica del proyecto.":"Definition of criteria, equipment, materials, layouts and the project's technical solution.",
+        "Fabricación y montaje":"Fabrication and installation",
+        "Ejecución de la solución con visión de campo, integración y mantenibilidad.":"Execution of the solution with a field-oriented approach, integration and maintainability.",
+        "Validación, estabilización y acompañamiento del sistema bajo condiciones reales de operación.":"Validation, stabilization and support of the system under real operating conditions.",
+        "Especialización de proyectos":"Project specialization",
+        "Uso total de la":"Full use of",
+        "energía del agave":"agave energy",
+        "SM San Gabriel incorpora como especialización el desarrollo de proyectos enfocados en el aprovechamiento integral de la energía asociada al procesamiento del agave, con énfasis en soluciones orientadas a la":"SM San Gabriel specializes in developing projects focused on the comprehensive use of energy associated with agave processing, with emphasis on solutions aimed at",
+        "generación de electricidad":"electricity generation",
+        "y al":"and",
+        "tratamiento de vinazas":"vinasse treatment",
+        "Aprovechamiento energético":"Energy utilization",
+        "Generación de electricidad":"Electricity generation",
+        "Tratamiento de vinazas":"Vinasse treatment",
+        "Integración de proceso":"Process integration",
+        "01 · Energía":"01 · Energy",
+        "Aprovechamiento integral del agave":"Comprehensive utilization of agave",
+        "Proyectos que consideran el uso total de la energía disponible dentro del proceso para elevar el aprovechamiento energético de la instalación.":"Projects that consider the full use of energy available within the process to increase the facility's energy utilization.",
+        "Agave":"Agave",
+        "Energía":"Energy",
+        "Electricidad":"Electricity",
+        "02 · Vinazas":"02 · Vinasse",
+        "Integración del tratamiento de vinazas como parte del proyecto industrial, vinculando proceso, manejo de corrientes y objetivos energéticos de la planta.":"Integration of vinasse treatment as part of the industrial project, linking process design, stream management and the plant's energy goals.",
+        "Vinazas":"Vinasse",
+        "Tratamiento":"Treatment",
+        "Integración":"Integration",
+        "Seguridad y especialización":"Safety and specialization",
+        "Experiencia donde la confiabilidad es crítica.":"Experience where reliability is critical.",
+        "Además de la ingeniería de planta, el currículum registra experiencia específica en protección contra incendio, recipientes a presión, válvulas de seguridad y dispositivos de relevo.":"In addition to plant engineering, the résumé documents specific experience in fire protection, pressure vessels, safety valves and pressure-relief devices.",
+        "Válvulas de seguridad":"Safety valves",
+        "Especialidad declarada en válvulas de seguridad y dispositivos de relevo para aplicaciones industriales.":"Declared specialization in safety valves and pressure-relief devices for industrial applications.",
+        "Protección contra incendio":"Fire protection",
+        "Experiencia en proyectos de protección contra incendio dentro de instalaciones industriales.":"Experience in fire-protection projects within industrial facilities.",
+        "Referencias normativas":"Regulatory references",
+        "El CV registra trabajo con NOM-002 SECRE, NOM-003 SECRE y NOM-004-SEDG, además de referencia a recipientes a presión.":"The résumé records work with NOM-002 SECRE, NOM-003 SECRE and NOM-004-SEDG, as well as pressure-vessel references.",
+        "Ing. José Fidencio Rodríguez Gómez.":"Eng. José Fidencio Rodríguez Gómez.",
+        "Una carrera enfocada en diseño, construcción, operación y solución de problemas industriales, complementada con dirección y control de empresa y formación en proyectos tecnológicos.":"A career focused on industrial design, construction, operation and problem solving, complemented by business management and technology-project education.",
+        "Ingeniería Química":"Chemical Engineering",
+        "Formación profesional en la Universidad de Guadalajara, Facultad de Ciencias Químicas.":"Professional education at the University of Guadalajara, Faculty of Chemical Sciences.",
+        "TESIS":"THESIS",
+        "Ingeniería desde el proyecto":"Engineering from the project stage",
+        "Tesis: “Anteproyecto para la instalación de un Horno de Cal en la localidad de Apulco, Jal.”":"Thesis: “Preliminary project for the installation of a Lime Kiln in Apulco, Jalisco.”",
+        "Medio siglo de experiencia industrial":"Half a century of industrial experience",
+        "Diseño, fabricación, montaje, mantenimiento y puesta en marcha de plantas industriales en siete sectores señalados en su currículum.":"Design, fabrication, installation, maintenance and commissioning of industrial plants across seven sectors listed in his résumé.",
+        "HOY":"TODAY",
+        "La experiencia acumulada se proyecta como el principal activo técnico de San Gabriel para análisis, diseño y ejecución de nuevos retos industriales.":"Accumulated experience is San Gabriel's main technical asset for analyzing, designing and executing new industrial challenges.",
+        "Formación":"Education",
+        "Maestría en Proyectos Tecnológicos · en proceso de titulación":"Master's in Technology Projects · degree process underway",
+        "Especialidad":"Specialty",
+        "Plantas industriales · Seguridad · Dispositivos de relevo":"Industrial plants · Safety · Pressure-relief devices",
+        "Contacto directo":"Direct contact",
+        "Cuéntenos su reto industrial.":"Tell us about your industrial challenge.",
+        "Describa brevemente el proyecto y envíe la información directamente a SM San Gabriel desde este formulario.":"Briefly describe the project and send the information directly to SM San Gabriel using this form.",
+        "WhatsApp / Teléfono":"WhatsApp / Phone",
+        "Correo":"Email",
+        "Enviar solicitud →":"Send request →",
+        "La información se enviará directamente a SM San Gabriel. El correo del solicitante se incluirá únicamente como dato de contacto.":"The information will be sent directly to SM San Gabriel. The applicant's email will only be included as contact information.",
+        "Diseño · Fabricación · Montaje · Energía del agave · Vinazas · Puesta en marcha":"Design · Fabrication · Installation · Agave energy · Vinasse · Commissioning",
+        "¡Información enviada correctamente!":"Information sent successfully!",
+        "Recibimos los datos de tu proyecto. En breve un ingeniero de SM San Gabriel se pondrá en contacto contigo.":"We received your project information. An SM San Gabriel engineer will contact you shortly.",
+        "Entendido":"Got it"
+      },
+      pt: {
+        "Ingeniería industrial · México":"Engenharia industrial · México",
+        "Empresa":"Empresa",
+        "Capacidades":"Capacidades",
+        "Sectores":"Setores",
+        "Agave & energía":"Agave & energia",
+        "Dirección técnica":"Direção técnica",
+        "Más de 50 años resolviendo retos industriales":"Mais de 50 anos resolvendo desafios industriais",
+        "Ingeniería, diseño, fabricación, montaje, mantenimiento y puesta en marcha de plantas industriales. Una trayectoria técnica construida desde Jalisco para proyectos donde la experiencia de campo, la seguridad y la confiabilidad operativa son esenciales.":"Engenharia, projeto, fabricação, montagem, manutenção e comissionamento de plantas industriais. Uma trajetória técnica construída a partir de Jalisco para projetos em que experiência de campo, segurança e confiabilidade operacional são essenciais.",
+        "Solicitar proyecto por WhatsApp":"Solicitar projeto pelo WhatsApp",
+        "Conocer la dirección técnica":"Conhecer a direção técnica",
+        "Dirección técnica:":"Direção técnica:",
+        "Ing. José Fidencio Rodríguez Gómez · Ingeniero Químico UdeG":"Eng. José Fidencio Rodríguez Gómez · Engenheiro Químico UdeG",
+        "Especialización destacada:":"Especialização em destaque:",
+        "energía del agave · tratamiento de vinazas · generación de electricidad":"energia do agave · tratamento de vinhaça · geração de eletricidade",
+        "Experiencia de campo":"Experiência de campo",
+        "Ingeniería industrial construida desde la operación real.":"Engenharia industrial construída a partir da operação real.",
+        "Ing. José Fidencio Rodríguez Gómez · Dirección técnica de San Gabriel":"Eng. José Fidencio Rodríguez Gómez · Direção técnica da San Gabriel",
+        "Años de experiencia industrial":"Anos de experiência industrial",
+        "Sectores industriales señalados en el CV":"Setores industriais indicados no currículo",
+        "Etapas: diseño, fabricación, montaje, mantenimiento y arranque":"Etapas: projeto, fabricação, montagem, manutenção e partida",
+        "Formación profesional y posgrado tecnológico":"Formação profissional e pós-graduação tecnológica",
+        "Ingeniería que se convierte en planta.":"Engenharia que se transforma em planta.",
+        "La fortaleza de San Gabriel está en integrar conocimiento de proceso con capacidad práctica de ejecución: entender el problema, definir la solución, fabricar, montar, poner en marcha y acompañar la operación industrial.":"A força da San Gabriel está em integrar conhecimento de processo com capacidade prática de execução: entender o problema, definir a solução, fabricar, montar, colocar em operação e acompanhar a operação industrial.",
+        "Experiencia técnica al frente":"Experiência técnica na liderança",
+        "La dirección técnica se apoya en la trayectoria del Ing. José Fidencio Rodríguez Gómez, Ingeniero Químico por la Universidad de Guadalajara y profesional con 50 años de experiencia reportada en diseño, fabricación, montaje, mantenimiento y puesta en marcha de plantas industriales.":"A direção técnica é respaldada pela trajetória do Eng. José Fidencio Rodríguez Gómez, Engenheiro Químico pela Universidade de Guadalajara e profissional com 50 anos de experiência registrada em projeto, fabricação, montagem, manutenção e comissionamento de plantas industriais.",
+        "Profesión":"Profissão",
+        "Ingeniero Químico · Universidad de Guadalajara":"Engenheiro Químico · Universidade de Guadalajara",
+        "Tesis":"Tese",
+        "Anteproyecto para la instalación de un Horno de Cal en Apulco, Jalisco":"Anteprojeto para a instalação de um Forno de Cal em Apulco, Jalisco",
+        "Posgrado":"Pós-graduação",
+        "Maestría en Proyectos Tecnológicos · UdeG":"Mestrado em Projetos Tecnológicos · UdeG",
+        "Ubicación":"Localização",
+        "San Gabriel, Jalisco, México":"San Gabriel, Jalisco, México",
+        "Contacto":"Contato",
+        "Cincuenta años de experiencia permiten diseñar pensando no sólo en el plano, sino en cómo se fabrica, se monta, se opera y se mantiene cada solución.":"Cinquenta anos de experiência permitem projetar pensando não apenas no desenho, mas também em como cada solução é fabricada, montada, operada e mantida.",
+        "Enfoque de SM San Gabriel.":"Abordagem da SM San Gabriel.",
+        "Del diseño a la puesta en marcha.":"Do projeto ao comissionamento.",
+        "San Gabriel concentra su propuesta en resolver proyectos industriales de forma integral, reduciendo la distancia entre ingeniería, fabricación, montaje y operación real.":"A San Gabriel concentra sua proposta em resolver projetos industriais de forma integral, reduzindo a distância entre engenharia, fabricação, montagem e operação real.",
+        "01 · INGENIERÍA":"01 · ENGENHARIA",
+        "Diseño de plantas y procesos":"Projeto de plantas e processos",
+        "Definición técnica de soluciones industriales, criterios de proceso, equipos, líneas y modificaciones para instalaciones nuevas o existentes.":"Definição técnica de soluções industriais, critérios de processo, equipamentos, linhas e modificações para instalações novas ou existentes.",
+        "02 · FABRICACIÓN":"02 · FABRICAÇÃO",
+        "Fabricación industrial":"Fabricação industrial",
+        "Conversión de ingeniería y especificaciones en equipos y componentes fabricables, con enfoque en operación y mantenibilidad.":"Conversão de engenharia e especificações em equipamentos e componentes fabricáveis, com foco em operação e manutenibilidade.",
+        "03 · MONTAJE":"03 · MONTAGEM",
+        "Construcción y montaje":"Construção e montagem",
+        "Integración en campo de equipos, sistemas y modificaciones industriales con coordinación técnica orientada a ejecución.":"Integração em campo de equipamentos, sistemas e modificações industriais com coordenação técnica orientada à execução.",
+        "04 · MANTENIMIENTO":"04 · MANUTENÇÃO",
+        "Mantenimiento y rehabilitación":"Manutenção e reabilitação",
+        "Intervenciones para conservar, recuperar o mejorar el desempeño de equipos e instalaciones industriales en servicio.":"Intervenções para conservar, recuperar ou melhorar o desempenho de equipamentos e instalações industriais em operação.",
+        "05 · ARRANQUE":"05 · PARTIDA",
+        "Puesta en marcha":"Comissionamento",
+        "Acompañamiento en el arranque y estabilización operativa de plantas, equipos y modificaciones de proceso.":"Acompanhamento na partida e estabilização operacional de plantas, equipamentos e modificações de processo.",
+        "06 · ENERGÍA":"06 · ENERGIA",
+        "Energía del agave y vinazas":"Energia do agave e vinhaça",
+        "Especialización en proyectos para el uso total de la energía del agave, tratamiento de vinazas y generación de electricidad.":"Especialização em projetos para o aproveitamento total da energia do agave, tratamento de vinhaça e geração de eletricidade.",
+        "07 · SEGURIDAD":"07 · SEGURANÇA",
+        "Protección y alivio":"Proteção e alívio",
+        "Experiencia en proyectos de protección contra incendio, válvulas de seguridad y dispositivos de relevo.":"Experiência em projetos de proteção contra incêndio, válvulas de segurança e dispositivos de alívio.",
+        "Experiencia multisectorial · Especial énfasis azucarero":"Experiência multissetorial · Ênfase especial no setor açucareiro",
+        "Ingeniería aplicada a industrias de proceso.":"Engenharia aplicada às indústrias de processo.",
+        "La trayectoria profesional registrada comprende plantas para las industrias azucarera, papelera, petrolera, farmacéutica, cementera, petroquímica y alimenticia.":"A trajetória profissional registrada abrange plantas das indústrias açucareira, de papel e celulose, petrolífera, farmacêutica, cimenteira, petroquímica e alimentícia.",
+        "Dentro de esta experiencia, la industria azucarera ocupa un lugar especialmente relevante por la participación técnica desarrollada en ingenios y sistemas de proceso a lo largo de décadas de actividad profesional.":"Dentro dessa experiência, a indústria açucareira ocupa um lugar especialmente relevante pela participação técnica desenvolvida em usinas e sistemas de processo ao longo de décadas de atividade profissional.",
+        "Azucarera":"Açucareira",
+        "Papelera":"Papel e celulose",
+        "Petrolera":"Petrolífera",
+        "Farmacéutica":"Farmacêutica",
+        "Cementera":"Cimenteira",
+        "Petroquímica":"Petroquímica",
+        "Alimenticia":"Alimentícia",
+        "La referencia de participación en todos los ingenios azucareros de México puede incorporarse de forma explícita cuando se integre un archivo de proyectos, ingenios, planos o referencias que permita documentarla públicamente.":"A referência à participação em todas as usinas de açúcar do México poderá ser incorporada explicitamente quando houver um arquivo de projetos, usinas, desenhos ou referências que permita documentá-la publicamente.",
+        "Diagnóstico":"Diagnóstico",
+        "Lectura de condiciones reales de planta, capacidades, restricciones, seguridad y objetivos de producción.":"Leitura das condições reais da planta, capacidades, restrições, segurança e objetivos de produção.",
+        "Ingeniería":"Engenharia",
+        "Definición de criterios, equipos, materiales, arreglos y solución técnica del proyecto.":"Definição de critérios, equipamentos, materiais, arranjos e solução técnica do projeto.",
+        "Fabricación y montaje":"Fabricação e montagem",
+        "Ejecución de la solución con visión de campo, integración y mantenibilidad.":"Execução da solução com visão de campo, integração e manutenibilidade.",
+        "Validación, estabilización y acompañamiento del sistema bajo condiciones reales de operación.":"Validação, estabilização e acompanhamento do sistema em condições reais de operação.",
+        "Especialización de proyectos":"Especialização de projetos",
+        "Uso total de la":"Uso total da",
+        "energía del agave":"energia do agave",
+        "SM San Gabriel incorpora como especialización el desarrollo de proyectos enfocados en el aprovechamiento integral de la energía asociada al procesamiento del agave, con énfasis en soluciones orientadas a la":"A SM San Gabriel incorpora como especialização o desenvolvimento de projetos voltados ao aproveitamento integral da energia associada ao processamento do agave, com ênfase em soluções destinadas à",
+        "generación de electricidad":"geração de eletricidade",
+        "y al":"e ao",
+        "tratamiento de vinazas":"tratamento de vinhaça",
+        "Aprovechamiento energético":"Aproveitamento energético",
+        "Generación de electricidad":"Geração de eletricidade",
+        "Tratamiento de vinazas":"Tratamento de vinhaça",
+        "Integración de proceso":"Integração de processo",
+        "01 · Energía":"01 · Energia",
+        "Aprovechamiento integral del agave":"Aproveitamento integral do agave",
+        "Proyectos que consideran el uso total de la energía disponible dentro del proceso para elevar el aprovechamiento energético de la instalación.":"Projetos que consideram o uso total da energia disponível no processo para elevar o aproveitamento energético da instalação.",
+        "Agave":"Agave",
+        "Energía":"Energia",
+        "Electricidad":"Eletricidade",
+        "02 · Vinazas":"02 · Vinhaça",
+        "Integración del tratamiento de vinazas como parte del proyecto industrial, vinculando proceso, manejo de corrientes y objetivos energéticos de la planta.":"Integração do tratamento de vinhaça como parte do projeto industrial, vinculando processo, manejo de correntes e objetivos energéticos da planta.",
+        "Vinazas":"Vinhaça",
+        "Tratamiento":"Tratamento",
+        "Integración":"Integração",
+        "Seguridad y especialización":"Segurança e especialização",
+        "Experiencia donde la confiabilidad es crítica.":"Experiência onde a confiabilidade é crítica.",
+        "Además de la ingeniería de planta, el currículum registra experiencia específica en protección contra incendio, recipientes a presión, válvulas de seguridad y dispositivos de relevo.":"Além da engenharia de planta, o currículo registra experiência específica em proteção contra incêndio, vasos de pressão, válvulas de segurança e dispositivos de alívio.",
+        "Válvulas de seguridad":"Válvulas de segurança",
+        "Especialidad declarada en válvulas de seguridad y dispositivos de relevo para aplicaciones industriales.":"Especialidade declarada em válvulas de segurança e dispositivos de alívio para aplicações industriais.",
+        "Protección contra incendio":"Proteção contra incêndio",
+        "Experiencia en proyectos de protección contra incendio dentro de instalaciones industriales.":"Experiência em projetos de proteção contra incêndio em instalações industriais.",
+        "Referencias normativas":"Referências normativas",
+        "El CV registra trabajo con NOM-002 SECRE, NOM-003 SECRE y NOM-004-SEDG, además de referencia a recipientes a presión.":"O currículo registra trabalhos com NOM-002 SECRE, NOM-003 SECRE e NOM-004-SEDG, além de referências a vasos de pressão.",
+        "Ing. José Fidencio Rodríguez Gómez.":"Eng. José Fidencio Rodríguez Gómez.",
+        "Una carrera enfocada en diseño, construcción, operación y solución de problemas industriales, complementada con dirección y control de empresa y formación en proyectos tecnológicos.":"Uma carreira focada em projeto, construção, operação e solução de problemas industriais, complementada por gestão empresarial e formação em projetos tecnológicos.",
+        "Ingeniería Química":"Engenharia Química",
+        "Formación profesional en la Universidad de Guadalajara, Facultad de Ciencias Químicas.":"Formação profissional na Universidade de Guadalajara, Faculdade de Ciências Químicas.",
+        "TESIS":"TESE",
+        "Ingeniería desde el proyecto":"Engenharia desde a etapa de projeto",
+        "Tesis: “Anteproyecto para la instalación de un Horno de Cal en la localidad de Apulco, Jal.”":"Tese: “Anteprojeto para a instalação de um Forno de Cal na localidade de Apulco, Jalisco.”",
+        "Medio siglo de experiencia industrial":"Meio século de experiência industrial",
+        "Diseño, fabricación, montaje, mantenimiento y puesta en marcha de plantas industriales en siete sectores señalados en su currículum.":"Projeto, fabricação, montagem, manutenção e comissionamento de plantas industriais em sete setores indicados em seu currículo.",
+        "HOY":"HOJE",
+        "La experiencia acumulada se proyecta como el principal activo técnico de San Gabriel para análisis, diseño y ejecución de nuevos retos industriales.":"A experiência acumulada é o principal ativo técnico da San Gabriel para análise, projeto e execução de novos desafios industriais.",
+        "Formación":"Formação",
+        "Maestría en Proyectos Tecnológicos · en proceso de titulación":"Mestrado em Projetos Tecnológicos · processo de titulação em andamento",
+        "Especialidad":"Especialidade",
+        "Plantas industriales · Seguridad · Dispositivos de relevo":"Plantas industriais · Segurança · Dispositivos de alívio",
+        "Contacto directo":"Contato direto",
+        "Cuéntenos su reto industrial.":"Conte-nos sobre seu desafio industrial.",
+        "Describa brevemente el proyecto y envíe la información directamente a SM San Gabriel desde este formulario.":"Descreva brevemente o projeto e envie as informações diretamente à SM San Gabriel por este formulário.",
+        "WhatsApp / Teléfono":"WhatsApp / Telefone",
+        "Correo":"E-mail",
+        "Enviar solicitud →":"Enviar solicitação →",
+        "La información se enviará directamente a SM San Gabriel. El correo del solicitante se incluirá únicamente como dato de contacto.":"As informações serão enviadas diretamente à SM San Gabriel. O e-mail do solicitante será incluído apenas como dado de contato.",
+        "Diseño · Fabricación · Montaje · Energía del agave · Vinazas · Puesta en marcha":"Projeto · Fabricação · Montagem · Energia do agave · Vinhaça · Comissionamento",
+        "¡Información enviada correctamente!":"Informações enviadas com sucesso!",
+        "Recibimos los datos de tu proyecto. En breve un ingeniero de SM San Gabriel se pondrá en contacto contigo.":"Recebemos os dados do seu projeto. Em breve, um engenheiro da SM San Gabriel entrará em contato com você.",
+        "Entendido":"Entendi"
+      }
+    };
+
+    const placeholderTranslations = {
+      en: {
+        "Nombre / Empresa":"Name / Company",
+        "Correo electrónico":"Email address",
+        "Teléfono":"Phone",
+        "Dirección (opcional)":"Address (optional)",
+        "Tipo de proyecto (montaje, agave, vinazas, energía, etc.)":"Project type (installation, agave, vinasse, energy, etc.)",
+        "Cuéntenos brevemente qué necesita":"Briefly tell us what you need"
+      },
+      pt: {
+        "Nombre / Empresa":"Nome / Empresa",
+        "Correo electrónico":"E-mail",
+        "Teléfono":"Telefone",
+        "Dirección (opcional)":"Endereço (opcional)",
+        "Tipo de proyecto (montaje, agave, vinazas, energía, etc.)":"Tipo de projeto (montagem, agave, vinhaça, energia etc.)",
+        "Cuéntenos brevemente qué necesita":"Conte-nos brevemente do que precisa"
+      }
+    };
+
+    const attributeTranslations = {
+      en: {
+        "Inicio":"Home",
+        "Navegación principal":"Main navigation",
+        "Cambiar idioma":"Change language",
+        "Seleccionar idioma":"Select language",
+        "Nombre o empresa":"Name or company",
+        "Correo electrónico":"Email address",
+        "Teléfono":"Phone",
+        "Dirección opcional":"Optional address",
+        "Tipo de proyecto":"Project type",
+        "Mensaje":"Message",
+        "Contactar por WhatsApp":"Contact via WhatsApp"
+      },
+      pt: {
+        "Inicio":"Início",
+        "Navegación principal":"Navegação principal",
+        "Cambiar idioma":"Mudar idioma",
+        "Seleccionar idioma":"Selecionar idioma",
+        "Nombre o empresa":"Nome ou empresa",
+        "Correo electrónico":"E-mail",
+        "Teléfono":"Telefone",
+        "Dirección opcional":"Endereço opcional",
+        "Tipo de proyecto":"Tipo de projeto",
+        "Mensaje":"Mensagem",
+        "Contactar por WhatsApp":"Contato pelo WhatsApp"
+      }
+    };
+
+    const titleTranslations = {
+      es: "SM San Gabriel | Ingeniería Industrial",
+      en: "SM San Gabriel | Industrial Engineering",
+      pt: "SM San Gabriel | Engenharia Industrial"
+    };
+
+    let currentLang = 'es';
+
+    const translatableTextNodes = [];
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        const parent = node.parentElement;
+        if (!parent || ['SCRIPT','STYLE','NOSCRIPT'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        if (parent.closest('#langSwitcher')) return NodeFilter.FILTER_REJECT;
+        return node.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      const raw = node.nodeValue;
+      const key = raw.trim();
+      translatableTextNodes.push({
+        node,
+        key,
+        leading: raw.match(/^\s*/)?.[0] || '',
+        trailing: raw.match(/\s*$/)?.[0] || ''
+      });
+    }
+
+    const translatableAttrs = [];
+    document.querySelectorAll('[placeholder], [aria-label]').forEach(el => {
+      ['placeholder','aria-label'].forEach(attr => {
+        if (el.hasAttribute(attr) && !el.closest('#langSwitcher')) {
+          translatableAttrs.push({ el, attr, original: el.getAttribute(attr) });
+        }
+      });
+    });
+
+    function translateText(key, lang) {
+      if (lang === 'es') return key;
+      return translations[lang]?.[key] || key;
+    }
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.title = titleTranslations[lang] || titleTranslations.es;
+
+      translatableTextNodes.forEach(item => {
+        item.node.nodeValue = item.leading + translateText(item.key, lang) + item.trailing;
+      });
+
+      translatableAttrs.forEach(item => {
+        if (item.attr === 'placeholder') {
+          item.el.setAttribute(item.attr, lang === 'es' ? item.original : (placeholderTranslations[lang]?.[item.original] || item.original));
+        } else {
+          item.el.setAttribute(item.attr, lang === 'es' ? item.original : (attributeTranslations[lang]?.[item.original] || item.original));
+        }
+      });
+
+      document.getElementById('langCurrent').textContent = lang.toUpperCase();
+      document.querySelectorAll('.lang-option').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+      document.getElementById('langMenu').classList.remove('open');
+      document.getElementById('langToggle').setAttribute('aria-expanded','false');
+    }
+
+    const langToggle = document.getElementById('langToggle');
+    const langMenu = document.getElementById('langMenu');
+    langToggle.addEventListener('click', () => {
+      const open = langMenu.classList.toggle('open');
+      langToggle.setAttribute('aria-expanded', String(open));
+    });
+    document.querySelectorAll('.lang-option').forEach(btn => {
+      btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
+    });
+    document.addEventListener('click', (event) => {
+      if (!document.getElementById('langSwitcher').contains(event.target)) {
+        langMenu.classList.remove('open');
+        langToggle.setAttribute('aria-expanded','false');
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        langMenu.classList.remove('open');
+        langToggle.setAttribute('aria-expanded','false');
+      }
+    });
+
+    // Always start in Spanish on every new page load.
+    applyLanguage('es');
+
     document.getElementById('year').textContent = new Date().getFullYear();
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -751,7 +1221,7 @@
       const message = document.getElementById('waMessage').value.trim();
 
       button.disabled = true;
-      button.textContent = 'Enviando...';
+      button.textContent = currentLang === 'en' ? 'Sending...' : currentLang === 'pt' ? 'Enviando...' : 'Enviando...';
       status.textContent = '';
 
       try {
@@ -784,11 +1254,15 @@
         document.body.classList.add('modal-open');
         document.getElementById('confirmationClose').focus();
       } catch (error) {
-        status.textContent = 'No pudimos enviar la solicitud en este momento. Intente nuevamente o contáctenos por WhatsApp.';
+        status.textContent = currentLang === 'en'
+          ? 'We could not send your request at this time. Please try again or contact us via WhatsApp.'
+          : currentLang === 'pt'
+            ? 'Não foi possível enviar sua solicitação neste momento. Tente novamente ou entre em contato pelo WhatsApp.'
+            : 'No pudimos enviar la solicitud en este momento. Intente nuevamente o contáctenos por WhatsApp.';
         status.style.color = '#ffb4ab';
       } finally {
         button.disabled = false;
-        button.textContent = 'Enviar solicitud →';
+        button.textContent = translateText('Enviar solicitud →', currentLang);
       }
     });
 
