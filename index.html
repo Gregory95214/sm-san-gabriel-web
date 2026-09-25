@@ -453,6 +453,125 @@
       .whatsapp-float::after { display:none; }
     }
   
+
+    /* Sugar industry specialization */
+    .sugar-special-section {
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 88% 18%, rgba(214,146,67,.18), transparent 28%),
+        radial-gradient(circle at 12% 80%, rgba(150,109,57,.12), transparent 30%),
+        #101816;
+      border-bottom:1px solid rgba(214,146,67,.14);
+    }
+    .sugar-special-section::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:.18;
+      background-image:
+        linear-gradient(rgba(242,189,112,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(242,189,112,.07) 1px, transparent 1px);
+      background-size:52px 52px;
+    }
+    .sugar-special-inner { position:relative; z-index:1; }
+    .sugar-special-head {
+      display:grid;
+      grid-template-columns:.9fr 1.1fr;
+      gap:46px;
+      align-items:end;
+      margin-bottom:34px;
+    }
+    .sugar-special-kicker {
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+      color:#e7b86f;
+      font-size:.75rem;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-weight:850;
+      margin-bottom:16px;
+    }
+    .sugar-special-kicker::before {
+      content:"";
+      width:38px;
+      height:1px;
+      background:#d69243;
+    }
+    .sugar-special-head h2 {
+      font-size:clamp(2.7rem,5vw,5rem);
+      letter-spacing:-.055em;
+      max-width:720px;
+    }
+    .sugar-special-head h2 span { color:#f0bd75; }
+    .sugar-special-head > p {
+      margin:0;
+      color:#b7c2be;
+      font-size:1.02rem;
+      max-width:620px;
+    }
+    .sugar-service-grid {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+    .sugar-service-card {
+      min-height:220px;
+      padding:28px;
+      border-radius:24px;
+      border:1px solid rgba(242,189,112,.16);
+      background:linear-gradient(145deg, rgba(214,146,67,.08), rgba(255,255,255,.025));
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .sugar-service-num {
+      color:#dba45d;
+      font-size:.7rem;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-weight:900;
+    }
+    .sugar-service-card h3 {
+      margin-top:16px;
+      font-size:1.45rem;
+      letter-spacing:-.03em;
+    }
+    .sugar-service-card p {
+      margin:12px 0 0;
+      color:#aebbb6;
+      font-size:.9rem;
+    }
+    .sugar-special-flow {
+      margin-top:22px;
+      padding-top:18px;
+      border-top:1px solid rgba(255,255,255,.07);
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:7px;
+      color:#e9dfd2;
+      font-size:.76rem;
+      font-weight:800;
+    }
+    .sugar-flow-node {
+      padding:7px 9px;
+      border-radius:9px;
+      border:1px solid rgba(242,189,112,.14);
+      background:rgba(255,255,255,.035);
+    }
+    .sugar-flow-arrow { color:#d69243; }
+    @media (max-width: 980px) {
+      .sugar-special-head { grid-template-columns:1fr; gap:18px; }
+      .sugar-service-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width: 640px) {
+      .sugar-service-grid { grid-template-columns:1fr; }
+      .sugar-service-card { min-height:auto; }
+    }
+
     /* Language selector */
     .lang-switcher { position:relative; margin-left:10px; flex:0 0 auto; }
     .lang-toggle {
@@ -693,6 +812,77 @@
               <div class="energy-flow"><span class="flow-node">Vinazas</span><span class="flow-arrow">→</span><span class="flow-node">Tratamiento</span><span class="flow-arrow">→</span><span class="flow-node">Integración</span></div>
             </article>
           </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="sugar-special-section" id="industria-azucarera">
+      <div class="container sugar-special-inner">
+        <div class="sugar-special-head reveal">
+          <div>
+            <div class="sugar-special-kicker">Especialización industrial</div>
+            <h2>Ingeniería integral para la <span>industria azucarera</span>.</h2>
+          </div>
+          <p>
+            Análisis técnico del ingenio para comprender el comportamiento de materiales, vapor, agua y servicios auxiliares, detectar áreas de oportunidad y convertir los hallazgos en soluciones de ingeniería, fabricación y montaje.
+          </p>
+        </div>
+
+        <div class="sugar-service-grid">
+          <article class="sugar-service-card reveal">
+            <div>
+              <span class="sugar-service-num">01 · Proceso</span>
+              <h3>Balance de materiales</h3>
+              <p>Cuantificación y seguimiento de materias primas, productos, subproductos y corrientes de proceso para identificar desviaciones y oportunidades de mejora.</p>
+            </div>
+            <div class="sugar-special-flow"><span class="sugar-flow-node">Materia prima</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Proceso</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Producto</span></div>
+          </article>
+
+          <article class="sugar-service-card reveal">
+            <div>
+              <span class="sugar-service-num">02 · Energía térmica</span>
+              <h3>Balance de vapor</h3>
+              <p>Evaluación de la generación, distribución y consumo de vapor por departamento para localizar pérdidas, excedentes y demandas críticas.</p>
+            </div>
+            <div class="sugar-special-flow"><span class="sugar-flow-node">Generación</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Distribución</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Consumo</span></div>
+          </article>
+
+          <article class="sugar-service-card reveal">
+            <div>
+              <span class="sugar-service-num">03 · Servicios</span>
+              <h3>Balance de agua y servicios auxiliares</h3>
+              <p>Análisis del uso, recirculación y requerimientos de agua y servicios auxiliares para entender su relación con la operación global del ingenio.</p>
+            </div>
+            <div class="sugar-special-flow"><span class="sugar-flow-node">Agua</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Servicios</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Operación</span></div>
+          </article>
+
+          <article class="sugar-service-card reveal">
+            <div>
+              <span class="sugar-service-num">04 · Operación</span>
+              <h3>Análisis departamental</h3>
+              <p>Revisión técnica por departamentos para relacionar consumos, capacidades, restricciones y comportamiento operativo de cada área del proceso.</p>
+            </div>
+            <div class="sugar-special-flow"><span class="sugar-flow-node">Departamento</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Indicadores</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Diagnóstico</span></div>
+          </article>
+
+          <article class="sugar-service-card reveal">
+            <div>
+              <span class="sugar-service-num">05 · Optimización</span>
+              <h3>Detección de áreas de oportunidad</h3>
+              <p>Integración de balances y condiciones reales de operación para localizar puntos de mejora y priorizar acciones con impacto técnico y operativo.</p>
+            </div>
+            <div class="sugar-special-flow"><span class="sugar-flow-node">Análisis</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Oportunidad</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Mejora</span></div>
+          </article>
+
+          <article class="sugar-service-card reveal">
+            <div>
+              <span class="sugar-service-num">06 · Ejecución</span>
+              <h3>Fabricación y montaje de equipos</h3>
+              <p>Desarrollo y ejecución de soluciones de equipo derivadas de las necesidades de planta, con enfoque en integración, instalación y operación industrial.</p>
+            </div>
+            <div class="sugar-special-flow"><span class="sugar-flow-node">Ingeniería</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Fabricación</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Montaje</span></div>
+          </article>
         </div>
       </div>
     </section>
@@ -942,6 +1132,45 @@
         "Diseño · Fabricación · Montaje · Energía del agave · Vinazas · Puesta en marcha":"Design · Fabrication · Installation · Agave energy · Vinasse · Commissioning",
         "¡Información enviada correctamente!":"Information sent successfully!",
         "Recibimos los datos de tu proyecto. En breve un ingeniero de SM San Gabriel se pondrá en contacto contigo.":"We received your project information. An SM San Gabriel engineer will contact you shortly.",
+        "Especialización industrial":"Industrial specialization",
+        "Ingeniería integral para la":"Integrated engineering for the",
+        "industria azucarera":"sugar industry",
+        "Análisis técnico del ingenio para comprender el comportamiento de materiales, vapor, agua y servicios auxiliares, detectar áreas de oportunidad y convertir los hallazgos en soluciones de ingeniería, fabricación y montaje.":"Technical analysis of the sugar mill to understand the behavior of materials, steam, water and utilities, identify improvement opportunities and turn findings into engineering, fabrication and installation solutions.",
+        "01 · Proceso":"01 · Process",
+        "Balance de materiales":"Material balance",
+        "Cuantificación y seguimiento de materias primas, productos, subproductos y corrientes de proceso para identificar desviaciones y oportunidades de mejora.":"Quantification and tracking of raw materials, products, by-products and process streams to identify deviations and improvement opportunities.",
+        "Materia prima":"Raw material",
+        "Proceso":"Process",
+        "Producto":"Product",
+        "02 · Energía térmica":"02 · Thermal energy",
+        "Balance de vapor":"Steam balance",
+        "Evaluación de la generación, distribución y consumo de vapor por departamento para localizar pérdidas, excedentes y demandas críticas.":"Evaluation of steam generation, distribution and consumption by department to identify losses, surpluses and critical demand.",
+        "Generación":"Generation",
+        "Distribución":"Distribution",
+        "Consumo":"Consumption",
+        "03 · Servicios":"03 · Utilities",
+        "Balance de agua y servicios auxiliares":"Water and utilities balance",
+        "Análisis del uso, recirculación y requerimientos de agua y servicios auxiliares para entender su relación con la operación global del ingenio.":"Analysis of water use, recirculation and utility requirements to understand their relationship with the mill's overall operation.",
+        "Agua":"Water",
+        "Servicios":"Utilities",
+        "Operación":"Operation",
+        "04 · Operación":"04 · Operation",
+        "Análisis departamental":"Department-by-department analysis",
+        "Revisión técnica por departamentos para relacionar consumos, capacidades, restricciones y comportamiento operativo de cada área del proceso.":"Technical review by department to relate consumption, capacities, constraints and operating behavior across each process area.",
+        "Departamento":"Department",
+        "Indicadores":"Indicators",
+        "Diagnóstico":"Assessment",
+        "05 · Optimización":"05 · Optimization",
+        "Detección de áreas de oportunidad":"Opportunity identification",
+        "Integración de balances y condiciones reales de operación para localizar puntos de mejora y priorizar acciones con impacto técnico y operativo.":"Integration of balances and real operating conditions to identify improvement points and prioritize actions with technical and operational impact.",
+        "Análisis":"Analysis",
+        "Oportunidad":"Opportunity",
+        "Mejora":"Improvement",
+        "06 · Ejecución":"06 · Execution",
+        "Fabricación y montaje de equipos":"Equipment fabrication and installation",
+        "Desarrollo y ejecución de soluciones de equipo derivadas de las necesidades de planta, con enfoque en integración, instalación y operación industrial.":"Development and execution of equipment solutions derived from plant needs, focused on integration, installation and industrial operation.",
+        "Fabricación":"Fabrication",
+        "Montaje":"Installation",
         "Entendido":"Got it"
       },
       pt: {
@@ -1079,6 +1308,45 @@
         "Diseño · Fabricación · Montaje · Energía del agave · Vinazas · Puesta en marcha":"Projeto · Fabricação · Montagem · Energia do agave · Vinhaça · Comissionamento",
         "¡Información enviada correctamente!":"Informações enviadas com sucesso!",
         "Recibimos los datos de tu proyecto. En breve un ingeniero de SM San Gabriel se pondrá en contacto contigo.":"Recebemos os dados do seu projeto. Em breve, um engenheiro da SM San Gabriel entrará em contato com você.",
+        "Especialización industrial":"Especialização industrial",
+        "Ingeniería integral para la":"Engenharia integral para a",
+        "industria azucarera":"indústria açucareira",
+        "Análisis técnico del ingenio para comprender el comportamiento de materiales, vapor, agua y servicios auxiliares, detectar áreas de oportunidad y convertir los hallazgos en soluciones de ingeniería, fabricación y montaje.":"Análise técnica da usina para compreender o comportamento de materiais, vapor, água e utilidades, identificar oportunidades de melhoria e transformar os resultados em soluções de engenharia, fabricação e montagem.",
+        "01 · Proceso":"01 · Processo",
+        "Balance de materiales":"Balanço de materiais",
+        "Cuantificación y seguimiento de materias primas, productos, subproductos y corrientes de proceso para identificar desviaciones y oportunidades de mejora.":"Quantificação e acompanhamento de matérias-primas, produtos, subprodutos e correntes de processo para identificar desvios e oportunidades de melhoria.",
+        "Materia prima":"Matéria-prima",
+        "Proceso":"Processo",
+        "Producto":"Produto",
+        "02 · Energía térmica":"02 · Energia térmica",
+        "Balance de vapor":"Balanço de vapor",
+        "Evaluación de la generación, distribución y consumo de vapor por departamento para localizar pérdidas, excedentes y demandas críticas.":"Avaliação da geração, distribuição e consumo de vapor por departamento para localizar perdas, excedentes e demandas críticas.",
+        "Generación":"Geração",
+        "Distribución":"Distribuição",
+        "Consumo":"Consumo",
+        "03 · Servicios":"03 · Utilidades",
+        "Balance de agua y servicios auxiliares":"Balanço de água e utilidades",
+        "Análisis del uso, recirculación y requerimientos de agua y servicios auxiliares para entender su relación con la operación global del ingenio.":"Análise do uso, recirculação e necessidades de água e utilidades para compreender sua relação com a operação global da usina.",
+        "Agua":"Água",
+        "Servicios":"Utilidades",
+        "Operación":"Operação",
+        "04 · Operación":"04 · Operação",
+        "Análisis departamental":"Análise departamental",
+        "Revisión técnica por departamentos para relacionar consumos, capacidades, restricciones y comportamiento operativo de cada área del proceso.":"Revisão técnica por departamentos para relacionar consumos, capacidades, restrições e comportamento operacional de cada área do processo.",
+        "Departamento":"Departamento",
+        "Indicadores":"Indicadores",
+        "Diagnóstico":"Diagnóstico",
+        "05 · Optimización":"05 · Otimização",
+        "Detección de áreas de oportunidad":"Identificação de oportunidades",
+        "Integración de balances y condiciones reales de operación para localizar puntos de mejora y priorizar acciones con impacto técnico y operativo.":"Integração de balanços e condições reais de operação para localizar pontos de melhoria e priorizar ações com impacto técnico e operacional.",
+        "Análisis":"Análise",
+        "Oportunidad":"Oportunidade",
+        "Mejora":"Melhoria",
+        "06 · Ejecución":"06 · Execução",
+        "Fabricación y montaje de equipos":"Fabricação e montagem de equipamentos",
+        "Desarrollo y ejecución de soluciones de equipo derivadas de las necesidades de planta, con enfoque en integración, instalación y operación industrial.":"Desenvolvimento e execução de soluções de equipamentos derivadas das necessidades da planta, com foco em integração, instalação e operação industrial.",
+        "Fabricación":"Fabricação",
+        "Montaje":"Montagem",
         "Entendido":"Entendi"
       }
     };
