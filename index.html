@@ -518,14 +518,35 @@
       gap:14px;
     }
     .sugar-service-card {
-      min-height:220px;
+      min-height:232px;
       padding:28px;
       border-radius:24px;
       border:1px solid rgba(242,189,112,.16);
-      background:linear-gradient(145deg, rgba(214,146,67,.08), rgba(255,255,255,.025));
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.025), transparent 42%),
+        linear-gradient(145deg, rgba(214,146,67,.085), rgba(255,255,255,.025));
       display:flex;
       flex-direction:column;
       justify-content:space-between;
+      position:relative;
+      overflow:hidden;
+      transition:transform .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease;
+    }
+    .sugar-service-card::before {
+      content:"";
+      position:absolute;
+      inset:0 auto 0 0;
+      width:3px;
+      background:linear-gradient(180deg, rgba(242,189,112,.95), rgba(214,146,67,.15));
+      opacity:.72;
+    }
+    .sugar-service-card:hover {
+      transform:translateY(-5px);
+      border-color:rgba(242,189,112,.34);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.035), transparent 42%),
+        linear-gradient(145deg, rgba(214,146,67,.13), rgba(255,255,255,.035));
+      box-shadow:0 20px 50px rgba(0,0,0,.22);
     }
     .sugar-service-num {
       color:#dba45d;
@@ -563,13 +584,101 @@
       background:rgba(255,255,255,.035);
     }
     .sugar-flow-arrow { color:#d69243; }
+
+    .sugar-questions {
+      margin-top:30px;
+      padding:30px;
+      border-radius:28px;
+      border:1px solid rgba(242,189,112,.2);
+      background:
+        radial-gradient(circle at 88% 18%, rgba(214,146,67,.14), transparent 28%),
+        linear-gradient(135deg, rgba(214,146,67,.08), rgba(255,255,255,.025));
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:30px;
+      align-items:center;
+      box-shadow:0 22px 60px rgba(0,0,0,.18);
+    }
+    .sugar-questions-copy h3 {
+      font-size:clamp(1.8rem,3.4vw,3.05rem);
+      letter-spacing:-.045em;
+      max-width:760px;
+    }
+    .sugar-questions-copy > p {
+      margin:14px 0 0;
+      color:#b9c4c0;
+      max-width:720px;
+    }
+    .sugar-question-list {
+      display:grid;
+      gap:10px;
+      margin-top:22px;
+    }
+    .sugar-question {
+      display:grid;
+      grid-template-columns:36px 1fr;
+      gap:12px;
+      align-items:start;
+      padding:14px 15px;
+      border-radius:15px;
+      border:1px solid rgba(255,255,255,.07);
+      background:rgba(255,255,255,.025);
+    }
+    .sugar-question-mark {
+      width:30px;
+      height:30px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      border:1px solid rgba(242,189,112,.28);
+      background:rgba(214,146,67,.1);
+      color:#f0bd75;
+      font-weight:900;
+    }
+    .sugar-question strong {
+      display:block;
+      color:#eef3f1;
+      font-size:.95rem;
+      line-height:1.35;
+    }
+    .sugar-questions-action {
+      padding:25px;
+      border-radius:22px;
+      border:1px solid rgba(242,189,112,.17);
+      background:rgba(6,18,18,.45);
+    }
+    .sugar-questions-action span {
+      display:block;
+      color:#dba45d;
+      font-size:.72rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      margin-bottom:10px;
+    }
+    .sugar-questions-action h4 {
+      margin:0;
+      font-size:1.5rem;
+      letter-spacing:-.03em;
+    }
+    .sugar-questions-action p {
+      margin:10px 0 20px;
+      color:#acbab5;
+      font-size:.9rem;
+    }
+    .sugar-questions-action .btn { width:100%; }
+
     @media (max-width: 980px) {
       .sugar-special-head { grid-template-columns:1fr; gap:18px; }
       .sugar-service-grid { grid-template-columns:repeat(2,1fr); }
+      .sugar-questions { grid-template-columns:1fr; }
     }
     @media (max-width: 640px) {
       .sugar-service-grid { grid-template-columns:1fr; }
-      .sugar-service-card { min-height:auto; }
+      .sugar-service-card { min-height:auto; padding:24px; }
+      .sugar-questions { padding:22px; border-radius:22px; }
+      .sugar-question { grid-template-columns:32px 1fr; padding:12px; }
+      .sugar-questions-action { padding:20px; }
     }
 
     /* Language selector */
@@ -884,6 +993,36 @@
             <div class="sugar-special-flow"><span class="sugar-flow-node">Ingeniería</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Fabricación</span><span class="sugar-flow-arrow">→</span><span class="sugar-flow-node">Montaje</span></div>
           </article>
         </div>
+
+        <div class="sugar-questions reveal">
+          <div class="sugar-questions-copy">
+            <div class="sugar-special-kicker">¿Qué necesita tu ingenio?</div>
+            <h3>Convertimos necesidades de planta en soluciones concretas.</h3>
+            <p>Podemos partir de un diagnóstico, desarrollar un proyecto nuevo o acompañar la definición y ejecución de equipos específicos.</p>
+
+            <div class="sugar-question-list">
+              <div class="sugar-question">
+                <div class="sugar-question-mark">?</div>
+                <strong>¿Quieres conocer el diagnóstico de tu ingenio?</strong>
+              </div>
+              <div class="sugar-question">
+                <div class="sugar-question-mark">?</div>
+                <strong>¿Necesitas el diseño de una planta nueva?</strong>
+              </div>
+              <div class="sugar-question">
+                <div class="sugar-question-mark">?</div>
+                <strong>¿Necesitas el diseño, la especificación y/o la fabricación de un equipo nuevo?</strong>
+              </div>
+            </div>
+          </div>
+
+          <aside class="sugar-questions-action">
+            <span>SM San Gabriel</span>
+            <h4>Te apoyamos desde el análisis hasta la ejecución.</h4>
+            <p>Cuéntanos qué necesita tu planta y revisaremos contigo el alcance técnico del proyecto.</p>
+            <a class="btn btn-primary" href="#contacto">Cuéntanos tu necesidad →</a>
+          </aside>
+        </div>
       </div>
     </section>
 
@@ -1171,6 +1310,15 @@
         "Desarrollo y ejecución de soluciones de equipo derivadas de las necesidades de planta, con enfoque en integración, instalación y operación industrial.":"Development and execution of equipment solutions derived from plant needs, focused on integration, installation and industrial operation.",
         "Fabricación":"Fabrication",
         "Montaje":"Installation",
+        "¿Qué necesita tu ingenio?":"What does your sugar mill need?",
+        "Convertimos necesidades de planta en soluciones concretas.":"We turn plant needs into concrete solutions.",
+        "Podemos partir de un diagnóstico, desarrollar un proyecto nuevo o acompañar la definición y ejecución de equipos específicos.":"We can start with an assessment, develop a new project, or support the definition and execution of specific equipment.",
+        "¿Quieres conocer el diagnóstico de tu ingenio?":"Do you want an assessment of your sugar mill?",
+        "¿Necesitas el diseño de una planta nueva?":"Do you need the design of a new plant?",
+        "¿Necesitas el diseño, la especificación y/o la fabricación de un equipo nuevo?":"Do you need the design, specification and/or fabrication of new equipment?",
+        "Te apoyamos desde el análisis hasta la ejecución.":"We support you from analysis through execution.",
+        "Cuéntanos qué necesita tu planta y revisaremos contigo el alcance técnico del proyecto.":"Tell us what your plant needs and we will review the project's technical scope with you.",
+        "Cuéntanos tu necesidad →":"Tell us what you need →",
         "Entendido":"Got it"
       },
       pt: {
@@ -1347,6 +1495,15 @@
         "Desarrollo y ejecución de soluciones de equipo derivadas de las necesidades de planta, con enfoque en integración, instalación y operación industrial.":"Desenvolvimento e execução de soluções de equipamentos derivadas das necessidades da planta, com foco em integração, instalação e operação industrial.",
         "Fabricación":"Fabricação",
         "Montaje":"Montagem",
+        "¿Qué necesita tu ingenio?":"Do que sua usina precisa?",
+        "Convertimos necesidades de planta en soluciones concretas.":"Transformamos necessidades da planta em soluções concretas.",
+        "Podemos partir de un diagnóstico, desarrollar un proyecto nuevo o acompañar la definición y ejecución de equipos específicos.":"Podemos começar com um diagnóstico, desenvolver um novo projeto ou acompanhar a definição e execução de equipamentos específicos.",
+        "¿Quieres conocer el diagnóstico de tu ingenio?":"Quer conhecer o diagnóstico da sua usina?",
+        "¿Necesitas el diseño de una planta nueva?":"Precisa do projeto de uma nova planta?",
+        "¿Necesitas el diseño, la especificación y/o la fabricación de un equipo nuevo?":"Precisa do projeto, especificação e/ou fabricação de um equipamento novo?",
+        "Te apoyamos desde el análisis hasta la ejecución.":"Apoiamos você desde a análise até a execução.",
+        "Cuéntanos qué necesita tu planta y revisaremos contigo el alcance técnico del proyecto.":"Conte-nos do que sua planta precisa e revisaremos com você o escopo técnico do projeto.",
+        "Cuéntanos tu necesidad →":"Conte-nos sua necessidade →",
         "Entendido":"Entendi"
       }
     };
