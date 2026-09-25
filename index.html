@@ -1623,6 +1623,22 @@
       pt: "SM San Gabriel | Engenharia Industrial"
     };
 
+    function trackEvent(name, params = {}) {
+      if (typeof window.gtag !== 'function') return;
+      window.gtag('event', name, {
+        page_language: currentLang || 'es',
+        ...params
+      });
+    }
+
+    function elementLocation(el) {
+      if (el.closest('.nav')) return 'header';
+      if (el.closest('.hero')) return 'hero';
+      if (el.closest('#contacto')) return 'contact';
+      if (el.classList.contains('whatsapp-float')) return 'floating_button';
+      return 'page';
+    }
+
     let currentLang = 'es';
 
     const translatableTextNodes = [];
@@ -1661,6 +1677,7 @@
     }
 
     function applyLanguage(lang) {
+      const previousLang = currentLang;
       currentLang = lang;
       document.documentElement.lang = lang;
       document.title = titleTranslations[lang] || titleTranslations.es;
@@ -1683,6 +1700,13 @@
       });
       document.getElementById('langMenu').classList.remove('open');
       document.getElementById('langToggle').setAttribute('aria-expanded','false');
+
+      if (previousLang && previousLang !== lang) {
+        trackEvent('language_change', {
+          language_from: previousLang,
+          language_to: lang
+        });
+      }
     }
 
     const langToggle = document.getElementById('langToggle');
@@ -1720,6 +1744,45 @@
       });
     }, { threshold: .12 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Analytics: contact actions. No personal form data is sent to Google Analytics.
+    document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
+      link.addEventListener('click', () => {
+        trackEvent('whatsapp_click', {
+          link_location: elementLocation(link)
+        });
+      });
+    });
+
+    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+      link.addEventListener('click', () => {
+        trackEvent('email_click', {
+          link_location: elementLocation(link)
+        });
+      });
+    });
+
+    const interestSections = [
+      { id: 'industria-azucarera', event: 'sugar_industry_interest' },
+      { id: 'energia-agave', event: 'agave_energy_interest' }
+    ];
+
+    const interestObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting || entry.intersectionRatio < 0.45) return;
+        const config = interestSections.find(item => item.id === entry.target.id);
+        if (!config) return;
+        trackEvent(config.event, {
+          section_id: config.id
+        });
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: [0.45] });
+
+    interestSections.forEach(item => {
+      const section = document.getElementById(item.id);
+      if (section) interestObserver.observe(section);
+    });
 
     document.getElementById('emailForm').addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -1761,6 +1824,11 @@
         });
 
         if (!response.ok) throw new Error('No se pudo enviar');
+
+        trackEvent('generate_lead', {
+          form_name: 'contacto_principal',
+          lead_source: 'website_form'
+        });
 
         status.textContent = '';
         status.className = 'contact-disclaimer';
